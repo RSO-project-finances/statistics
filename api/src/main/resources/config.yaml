@@ -1,0 +1,14 @@
+kumuluzee:
+  name: expenses-service
+  env:
+    name: dev
+  version: 1.0.0
+  server:
+    base-url: http://localhost:8081
+    http:
+      port: 8081
+  datasources:
+    - jndi-name: jdbc/ExpensesDS
+      connection-url: jdbc:postgresql://localhost:5432/expenses
+      username: dbuser
+      password: postgres

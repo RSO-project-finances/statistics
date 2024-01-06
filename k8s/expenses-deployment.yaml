@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: expenses-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: expenses
+  template:
+    metadata:
+      labels:
+        app: expenses
+    spec:
+      containers:
+        - image: tomaz12345/expenses
+        #- image: expenses
+          name: expenses
+          env:
+            - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
+              value: jdbc:postgresql://localhost:5432/expenses
+            - name: KUMULUZEE_DATASOURCES0_USERNAME
+              value: dbuser
+            - name: KUMULUZEE_DATASOURCES0_PASSWORD
+              value: password
+          ports:
+            - containerPort: 8081
+              name: server
+        - image: postgres:13
+          name: pg-expenses
+          env:
+            - name: POSTGRES_DB
+              value: expenses
+            - name: POSTGRES_USER
+              value: dbuser
+            - name: POSTGRES_PASSWORD
+              value: postgres
+          ports:
+            - containerPort: 5432
+              name: db
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: expenses
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 8081
+      protocol: TCP
+      targetPort: server
+  selector:
+    app: expenses
