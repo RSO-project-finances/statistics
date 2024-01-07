@@ -26,6 +26,9 @@ public class ExpensesEntity {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "price")
+    private Double price;
+
     public Integer getExpenseId() {
         return id;
     }
@@ -56,5 +59,13 @@ public class ExpensesEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 }

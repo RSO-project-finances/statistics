@@ -12,6 +12,7 @@ public class ExpensesConverter {
         dto.setKind(entity.getKind());
         dto.setDateOccurrence(entity.getDateoccurrence());
         dto.setDescription(entity.getDescription());
+        dto.setPrice(entity.getPrice());
 
         return dto;
 
@@ -24,6 +25,7 @@ public class ExpensesConverter {
         entity.setKind(dto.getKind());
         entity.setDateoccurrence(dto.getDateOccurrence());
         entity.setDescription(dto.getDescription());
+        entity.setPrice(dto.getPrice());
 
 
         return entity;

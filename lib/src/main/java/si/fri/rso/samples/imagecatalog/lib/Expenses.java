@@ -8,6 +8,7 @@ public class Expenses {
     private String kind;
     private Date date_occurrence;
     private String description;
+    private Double price;
 
     public String getKind() {
         return kind;
@@ -39,5 +40,19 @@ public class Expenses {
 
     public void setExpenseId(Integer expenseId) {
         this.expenseId = expenseId;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%d %s %s %s %.02f",
+                expenseId, kind, date_occurrence, description, price);
     }
 }
