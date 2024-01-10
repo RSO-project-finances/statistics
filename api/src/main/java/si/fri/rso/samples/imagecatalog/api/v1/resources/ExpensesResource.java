@@ -1,5 +1,6 @@
 package si.fri.rso.samples.imagecatalog.api.v1.resources;
 
+import com.kumuluz.ee.logs.cdi.Log;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.headers.Header;
@@ -25,9 +26,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import org.json.JSONObject;
 
 
 
+@Log
 @ApplicationScoped
 @Path("/statistics")
 @Produces(MediaType.APPLICATION_JSON)
@@ -54,13 +57,20 @@ public class ExpensesResource {
     public Response getExpenses() {
 
         List<Expenses> expenses = expensesBean.getExpensesFilter(uriInfo);
-        for (Expenses expense : expenses) {
-            System.out.println(expense);
+
+        if (expenses == null) {
+            log.info("service unavailable");
+
+            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
+        } else {
+            for (Expenses expense : expenses) {
+                log.info(expense.toString());
+            }
+
+            List<Stat> stats = returnStats(expenses);
+
+            return Response.status(Response.Status.OK).entity(stats).build();
         }
-
-        List<Stat> stats = returnStats(expenses);
-
-        return Response.status(Response.Status.OK).entity(stats).build();
     }
 
     public List<Stat> returnStats(List<Expenses> expenses) {

@@ -12,9 +12,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.UriInfo;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
+import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
+import org.eclipse.microprofile.faulttolerance.Fallback;
+import org.eclipse.microprofile.faulttolerance.Timeout;
 
 
 @RequestScoped
@@ -36,6 +41,9 @@ public class ExpensesBean {
 
     }
 
+    @Timeout(value = 5, unit = ChronoUnit.SECONDS)
+    @CircuitBreaker
+    @Fallback(fallbackMethod = "getExpensesFallback")
     public List<Expenses> getExpensesFilter(UriInfo uriInfo) {
 
         QueryParameters queryParameters = QueryParameters.query(uriInfo.getRequestUri().getQuery()).defaultOffset(0)
@@ -43,6 +51,10 @@ public class ExpensesBean {
 
         return JPAUtils.queryEntities(em, ExpensesEntity.class, queryParameters).stream()
                 .map(ExpensesConverter::toDto).collect(Collectors.toList());
+    }
+
+    public List<Expenses> getExpensesFallback(UriInfo uriInfo) {
+        return null;
     }
 
     private void beginTx() {
