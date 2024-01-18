@@ -1,5 +1,5 @@
 kumuluzee:
-  name: expenses-service
+  name: statistics-service
   env:
     name: dev
   version: 1.0.0

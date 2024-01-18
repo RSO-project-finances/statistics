@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: statistics-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: statistics
+  template:
+    metadata:
+      labels:
+        app: statistics
+    spec:
+      containers:
+        - image: tomaz12345/statistics
+          name: statistics
+          env:
+            - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
+              valueFrom:
+                secretKeyRef:
+                  name: pg-conn
+                  key: connection
+            - name: KUMULUZEE_DATASOURCES0_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: pg-user
+                  key: username
+            - name: KUMULUZEE_DATASOURCES0_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pg-pass
+                  key: password
+          ports:
+            - containerPort: 8081
+              protocol: TCP
+              name: server
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: statistics
+spec:
+  #type: ClusterIP
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: server
+  selector:
+    app: statistics
