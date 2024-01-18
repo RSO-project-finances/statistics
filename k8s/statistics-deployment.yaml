@@ -13,7 +13,7 @@ spec:
         app: statistics
     spec:
       containers:
-        - image: tomaz12345/statistics
+        - image: tomaz12345/statistics:v1.1
           name: statistics
           env:
             - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
