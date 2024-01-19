@@ -4,11 +4,18 @@ kumuluzee:
     name: dev
   version: 1.0.0
   server:
-    base-url: http://localhost:8081
+    base-url: http://20.228.195.151:8081
     http:
       port: 8081
+  dev:
+    scan-libraries:
+      - expenses-models
+      - expenses-services
   datasources:
     - jndi-name: jdbc/ExpensesDS
-      connection-url: jdbc:postgresql://localhost:5432/expenses
-      username: dbuser
-      password: postgres
+      connection-url: jdbc:postgresql://ep-billowing-bush-70918901.us-east-2.aws.neon.tech/expenses
+      username: tomazpoljansek12
+      password: JEyrqgMh7cH1
+  openapi-mp:
+    ui:
+      specification-server: http://20.228.195.151:8081

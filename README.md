@@ -4,8 +4,8 @@ microservice statistics
 ```bash
 mvn clean package
 docker build -t statistics .   
-docker tag statistics tomaz12345/statistics   
-docker push tomaz12345/statistics   
+docker tag statistics tomaz12345/statistics:v1.2 
+docker push tomaz12345/statistics:v1.2
 docker network ls  
 docker network rm rso
 docker network create rso
